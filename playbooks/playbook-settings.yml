@@ -1,0 +1,6 @@
+- name: Changing Settings
+  hosts: all
+  sudo: false
+  tasks:
+    - name: Cinnamon clock shows date
+      action: shell gsettings set org.cinnamon.desktop.interface clock-show-date true

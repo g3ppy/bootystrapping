@@ -1,0 +1,39 @@
+- name: Installing Firefox Extensions
+  hosts: all
+  sudo: false
+  vars:
+    prefs_file: "{{ lookup('pipe', [['find', '/home/', '-ipath', '/home/*/.mozilla/firefox/*/prefs.js']]) }}"
+  tasks:
+    - name: Ensure Firefox is installed
+      apt: pkg=firefox state=present
+
+    - name: Print prefs_file found
+      debug: var=prefs_file
+
+    - name: Set Firefox User Prefs
+      lineinfile: dest={{ prefs_file }}
+        state=present
+        regexp="user_pref.*{{ item.key }}.*"
+        line="user_pref(\"{{ item.key }}\", {{ item.value }});"
+      with_items:
+        - { key: "browser.startup.homepage",          value: '\"https://www.google.com\"' }
+        - { key: "browser.newtab.url",                value: '\"https://www.google.com\"' }
+        - { key: "browser.download.useDownloadDir",   value: false }
+        - { key: "extensions.treestyletab.prefsVersion",   value: 10 }
+        - { key: "extensions.treestyletab.tabbar.style",   value: '\"mixed\"' }
+        - { key: "extensions.treestyletab.tabbar.width",   value: 420 }
+
+    - name: Downloading Adblock Plus
+      action: shell wget https://addons.mozilla.org/firefox/downloads/latest/1865/addon-1865-latest.xpi -O /tmp/adblock_plus.xpi
+
+    - name: Downloading Tree Style Tab
+      action: shell wget https://addons.mozilla.org/firefox/downloads/file/286510/tree_style_tab-0.15.2014120101-fx.xpi -O /tmp/tree_style_tab.xpi
+
+    - name: Downloading Firebug
+      action: shell wget https://addons.mozilla.org/firefox/downloads/latest/1843/addon-1843-latest.xpi -O /tmp/firebug.xpi
+
+    - name: Downloading BetterTTV
+      action: shell wget https://nightdev.com/betterttv/firefox/betterttv.xpi -O /tmp/betterttv.xpi
+
+    - name: Installing Extensions in Firefox
+      action: shell firefox /tmp/adblock_plus.xpi /tmp/tree_style_tab.xpi /tmp/firebug.xpi /tmp/betterttv.xpi

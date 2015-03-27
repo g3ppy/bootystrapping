@@ -1,0 +1,10 @@
+- name: Copying scripts
+  hosts: all
+  sudo: false
+  tasks:
+    - name: Ensure ~/bin/ directory exists
+      file: path=~/bin/ state=directory
+
+    - name: Copying Twitch Downloader
+      get_url: url=https://raw.githubusercontent.com/ilyalissoboi/twitch_downloader/master/downloader.py dest=~/bin/twitch_downloader.py validate_certs=no
+

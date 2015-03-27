@@ -1,0 +1,17 @@
+- name: Bootystrapping plugins
+  hosts: all
+  sudo: false
+  tasks:
+    - name: Backing up existing ~/.zshrc
+      action: shell if [ -f ~/.zshrc ]; then mv ~/.zshrc{,.orig}; fi
+
+    - name: Installing oh-my-zsh (https://github.com/robbyrussell/oh-my-zsh)
+      action: git repo=https://github.com/robbyrussell/oh-my-zsh dest=~/.oh-my-zsh
+
+    - name: Creating new ~/.zshrc
+      action: shell cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+
+    - name: Backing up existing ~/.vimrc
+      action: shell if [ - ~/.vimrc ]; then mv ~/.vimrc{,.orig}; fi
+    - name: Installing spf13-vim, The Ultimate Vim Distribution (http://vim.spf13.com)
+

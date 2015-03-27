@@ -1,0 +1,20 @@
+- name: Bootystrapping developer environment
+  hosts: all
+  sudo: false
+  tasks:
+  - name: Install python using APT
+    apt: name=python state=latest
+    sudo: true
+
+  - name: Install python-pip using APT
+    apt: name=python-pip state=latest
+    sudo: true
+
+  - name: Installing python libraries
+    pip: name={{ item }}
+    sudo: true
+    with_items:
+      - cement
+      - virtualenv
+      - m3u8
+      - requests

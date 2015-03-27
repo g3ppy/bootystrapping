@@ -1,0 +1,55 @@
+- name: Bootystrapping developer environment
+  hosts: all
+  sudo: true
+  tasks:
+  - name: APT Update Cache
+    apt: update_cache=yes
+
+  - name: APT Safe Upgrade
+    apt: upgrade=safe
+
+  - name: Install libraries using APT
+    apt: name={{ item }} state=latest
+    with_items:
+      - git
+      - vim
+      - zsh
+      - anki
+      - curl
+      - htop
+      - aria2
+      - codeblocks
+      - build-essential
+      - ubuntu-restricted-extras
+
+
+  - name: Adding repositories to APT
+    command: add-apt-repository -y {{ item }}
+    with_items:
+    - ppa:mc3man/trusty-media
+    - ppa:webupd8team/java
+    - ppa:webupd8team/sublime-text-3
+    - ppa:me-davidsansome/clementine
+
+  - name: APT Update Cache (with repos)
+    apt: update_cache=true
+
+  #apt_repository: repo='ppa:mc3man/trusty-media' state=present
+    #ppa:webupd8team/java
+    #sudo: true
+
+  - name: Automatically select the Oracle License
+    tags: java
+    shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+    changed_when: false
+
+  - name: Install third party libraries using APT
+    apt: name={{ item }} state=latest
+    with_items:
+      - ffmpeg
+      - oracle-java7-installer
+      - oracle-java8-installer
+      - oracle-java8-set-default
+      - sublime-text-installer
+      - clementine
+
