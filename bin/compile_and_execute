@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+if [ -z $1 ] || [ ! -f $1 ] || [[ $1 != *.cpp ]]; then
+    echo "Make sure the first argument is a cpp file"
+    exit
+fi
+
+COMMAND="g++ -std=c++11 -o $(basename $1 .cpp) $1 && ./$(basename $1 .cpp)"
+
+if [ ! -z $2 ]; then
+    COMMAND="$COMMAND < $2"
+fi
+
+if [ ! -z $3 ]; then
+    COMMAND="$COMMAND > $3"
+fi
+
+echo $COMMAND
+eval $COMMAND

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+FILE_PATH="template.cpp"
+if [ ! -z $1 ]; then
+    FILE_PATH=$1
+fi
+
+cp -i "$(dirname $0)/template_codejam.cpp" $FILE_PATH

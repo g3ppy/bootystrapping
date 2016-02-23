@@ -21,6 +21,13 @@
       - codeblocks
       - build-essential
       - ubuntu-restricted-extras
+      - libxml2-utils
+      - mtp-tools
+      - mtpfs
+      - deluge
+      - lynx
+      - weather-util
+      - weather-util-data
 
 
   - name: Adding repositories to APT
@@ -29,7 +36,7 @@
     - ppa:mc3man/trusty-media
     - ppa:webupd8team/java
     - ppa:webupd8team/sublime-text-3
-    - ppa:me-davidsansome/clementine
+    #- ppa:me-davidsansome/clementine
 
   - name: APT Update Cache (with repos)
     apt: update_cache=true

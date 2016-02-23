@@ -2,7 +2,8 @@
   hosts: all
   sudo: false
   vars:
-    prefs_file: "{{ lookup('pipe', [['find', '/home/', '-ipath', '/home/*/.mozilla/firefox/*/prefs.js']]) }}"
+    #prefs_file: "{{ lookup('pipe', [['find', '/home/', '-ipath', '/home/*/.mozilla/firefox/*/prefs.js']]) }}"
+    prefs_file: "{{ lookup('pipe', 'find /home/ -ipath /home/*/.mozilla/firefox/*/prefs.js') }}"
   tasks:
     - name: Ensure Firefox is installed
       apt: pkg=firefox state=present
