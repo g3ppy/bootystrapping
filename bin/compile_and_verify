@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+if [ -z $1 ] || [ ! -f $1 ] || [[ $1 != *.cpp ]]; then
+    echo "Make sure the first argument is a cpp file and it exists"
+    exit
+fi
+
+if [ -z $2 ] || [ ! -d $2 ]; then
+    echo "Make sure the second argument is a directory and contains the tests"
+    exit
+fi
+
+COMPILE_COMMAND="g++ -std=c++11 -Wall -o build/$(basename $1 .cpp) $1"
+RUN_COMMAND="build/$(basename $1 .cpp)"
+
+mkdir -p build
+echo $COMPILE_COMMAND
+echo
+eval $COMPILE_COMMAND
+
+if [ $? != 0 ] || [ ! -f $RUN_COMMAND ]; then
+    echo "Compilation failed. Abort"
+    exit
+fi
+
+tests_count=0
+tests_fail=0
+tests_succ=0
+
+for in_file in $2/*.in; do
+    ok_file="$2/$(basename $in_file .in).ok"
+
+    if [ ! -f $ok_file ]; then
+        echo "Did not find an ok file for: $in_file, skipping"
+        continue
+    fi
+
+    ((tests_count++))
+    DIFF_COMMAND="diff -u <($RUN_COMMAND < $in_file 2>&1) <(cat $ok_file)"
+
+    echo -n "Running for: $in_file and $ok_file: "
+    #echo $DIFF_COMMAND
+    diff_result=$(eval $DIFF_COMMAND)
+
+    if [ $? == 0 ]; then
+        ((tests_succ++))
+        echo -e "\e[32mSuccessful\e[0m"
+    else
+        ((tests_fail++))
+        echo -e "\e[31mNot Successful\e[0m"
+        echo "$diff_result"
+    fi
+done
+
+echo
+
+if [ $tests_succ != 0 ]; then
+    echo -e "\e[32mTests Succesful\e[0m: $tests_succ/$tests_count"
+fi
+
+if [ $tests_fail != 0 ]; then
+    echo -e "\e[31mTests Failedzor\e[0m: $tests_fail/$tests_count"
+fi

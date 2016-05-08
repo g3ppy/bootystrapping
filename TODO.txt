@@ -1,0 +1,1 @@
+- add templates for infoarena, codeforces, acm-tju

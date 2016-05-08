@@ -5,9 +5,7 @@ if [ -z $1 ] || [ ! -f $1 ] || [[ $1 != *.cpp ]]; then
     exit
 fi
 
-mkdir -p build
-
-COMMAND="g++ -std=c++11 -Wall -o build/$(basename $1 .cpp) $1 && build/$(basename $1 .cpp)"
+COMMAND="g++ -std=c++11 -Wall -o $(basename $1 .cpp) $1 && time ./$(basename $1 .cpp)"
 
 if [ ! -z $2 ]; then
     COMMAND="$COMMAND < $2"

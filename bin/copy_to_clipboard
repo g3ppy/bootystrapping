@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -z $1 ] || [ ! -f $1 ] ; then
+    echo "Make sure the first argument is a file"
+    exit
+fi
+
+COMMAND="xclip -in -selection c $1"
+
+echo $COMMAND
+eval $COMMAND
