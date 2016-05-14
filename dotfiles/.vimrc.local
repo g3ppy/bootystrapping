@@ -1,0 +1,11 @@
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -Wall'
+
+set background=dark
+call togglebg#map("<F5>")
+
+"let g:solarized_termcolors=256
+"colorscheme apprentice
+colorscheme zenburn
+"colorscheme pencil
+set t_Co=256
+
