@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/b00tl0ader/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -7,7 +7,10 @@ export ZSH=/home/b00tl0ader/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="bureau"
 ZSH_THEME="kphoen"
-#ZSH_THEME="intheclear"
+#ZSH_THEME="random"
+#ZSH_THEME="af-magic"
+
+ZSH_THEME="vlad"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -42,7 +45,7 @@ COMPLETION_WAITING_DOTS="true"
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="dd.mm.yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -51,19 +54,21 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git sublime rvm tmux z atom)
+plugins=(git sublime rvm tmux z atom virtualenv virtualenvwrapper archlinux nvm)
 
 # User configuration
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
-export PATH=$PATH:"/home/b00tl0ader/bin"
+export PATH=$PATH:~/bin
+export EDITOR=vim
+export WORKON_HOME="~/.envs/python"
+#export rvm_path="~/.envs/ruby"
 #export TERM=xterm-256color
 [[ $TMUX = ""  ]] && export TERM="xterm-256color"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
-alias rm=trash
-mkcd() { mkdir -p "$@" && cd "$@"; }
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -89,3 +94,39 @@ mkcd() { mkdir -p "$@" && cd "$@"; }
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Aliases
+alias rm=trash
+alias :q=exit
+alias :Q=exit
+alias rcreload=". ~/.zshrc"
+alias rcedit="$EDITOR ~/.zshrc"
+
+# Pacman Aliases
+alias sudo="sudo "
+alias pacclean="pacman -Qdtq && pacman -Rsn $(pacman -Qdtq)"
+alias pacupdate="pacman -Syu"
+alias pacinstall="pacman -S"
+alias pacsearch="pacman -Ss"
+alias pacremove="pacman -Rs"
+alias pacinfo="pacman -Si"
+alias paclistfiles="pacman -Ql"
+
+# Pretty print the path
+alias path='echo $PATH | tr -s ":" "\n"'
+
+# Mutes the annoying beeps
+xset -b
+
+alias tan='__tan() { tmux attach -t "$@" || tmux new -s "$@"; }; __tan'
+
+mkcd() { mkdir -p "$@" && cd "$@"; }
+pacmanual() { pacman -Qei | awk '/^Name/ { name=$3 } /^Groups/ { if ( $3 != "base" && $3 != "base-devel" ) { print name } }' }
+
+workon default
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh" # This loads nvm
